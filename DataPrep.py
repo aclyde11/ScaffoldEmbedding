@@ -285,5 +285,6 @@ def train_test_split(datafile, file_base_paths='data', sampler = 1.0, test_size 
 
 
 if __name__ == '__main__':
-    filename = "savi1to10_extended.txt"
-    train_test_split(filename, file_base_paths='data_subsample', sampler=0.1)
+    # filename = "savi1to10_extended.txt"
+    # train_test_split(filename, file_base_paths='data_subsample', sampler=0.1)
+    main()
