@@ -19,10 +19,10 @@ decoder_type: transformer
 encoder_type: transformer
 word_vec_size: 256
 rnn_size: 256
-layers: 4
+layers: 6
 transformer_ff: 2048
 heads: 8
-dropout: 0.1
+dropout: 0.05
 
 param_init: 0.0
 param_init_glorot: 'true'
@@ -41,6 +41,7 @@ max_generator_batches: 32
 
 
 train_steps: 500000
+valid_steps: 10000
 accum_count: 4
 optim: adam
 adam_beta1: 0.9
