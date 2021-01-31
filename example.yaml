@@ -2,7 +2,7 @@
 save_data: run/example
 ## Where the vocab(s) will be written
 src_vocab: run/example.vocab.src
-tgt_vocab: run/example.vocab.tgt
+tgt_vocab: run/example.vocab.src
 # Prevent overwriting existing files in the folder
 overwrite: True
 
