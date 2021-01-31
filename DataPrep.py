@@ -259,7 +259,7 @@ def tokenzie_smile(smi):
     assert smi == ''.join(tokens)
     return ' '.join(tokens)
 
-def train_test_split(datafile, file_base_paths='data', test_size = 0.2, rseed=42):
+def train_test_split(datafile, file_base_paths='data', sampler = 1.0, test_size = 0.2, rseed=42):
     if not os.path.exists(file_base_paths):
         os.makedirs(file_base_paths)
 
@@ -271,18 +271,19 @@ def train_test_split(datafile, file_base_paths='data', test_size = 0.2, rseed=42
                 with open(f"{file_base_paths}/src-val.txt", 'w') as src_val:
                     with open(f"{file_base_paths}/tgt-val.txt", 'w') as tgt_val:
                         for line in tqdm(fin):
-                            molecule, scaffold = line.strip().split("\t")
-                            molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
+                            if random.random() <= sampler:
+                                molecule, scaffold = line.strip().split("\t")
+                                molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
 
-                            if random.random() > test_size: # goes into train
-                                src_train.write(f"{scaffold_tokens}\n")
-                                tgt_train.write(f"{molecule_tokens}\n")
-                            else:
-                                src_val.write(f"{scaffold_tokens}\n")
-                                tgt_val.write(f"{molecule_tokens}\n")
+                                if random.random() > test_size: # goes into train
+                                    src_train.write(f"{scaffold_tokens}\n")
+                                    tgt_train.write(f"{molecule_tokens}\n")
+                                else:
+                                    src_val.write(f"{scaffold_tokens}\n")
+                                    tgt_val.write(f"{molecule_tokens}\n")
 
 
 
 if __name__ == '__main__':
     filename = "savi1to10_extended.txt"
-    train_test_split(filename)
+    train_test_split(filename, file_base_paths='data_subsample', sampler=0.1)
