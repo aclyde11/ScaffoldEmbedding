@@ -4,7 +4,7 @@ save_data: run/example
 src_vocab: run/example.vocab.src
 tgt_vocab: run/example.vocab.tgt
 # Prevent overwriting existing files in the folder
-overwrite: False
+overwrite: True
 
 # Corpus opts:
 data:
