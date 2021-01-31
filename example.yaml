@@ -15,12 +15,45 @@ data:
         path_src: data/data_subsample/src-val.txt
         path_tgt: data/data_subsample/tgt-val.txt
 
-## Train on a single GPU
-#world_size: 1
-#gpu_ranks: [0]
-#
-## Where to save the checkpoints
-#save_model: toy-ende/run/model
-#save_checkpoint_steps: 500
-#train_steps: 1000
-#valid_steps: 500
+decoder_type: transformer
+encoder_type: transformer
+word_vec_size: 256
+rnn_size: 256
+layers: 4
+transformer_ff: 2048
+heads: 8
+dropout: 0.1
+
+param_init: 0.0
+param_init_glorot: 'true'
+position_encoding: 'true'
+share_embeddings: 'true'
+global_attention: general
+global_attention_function: softmax
+self_attention_type: scaled-dot
+
+batch_size: 4096
+batch_type: tokens
+normalization: tokens
+label_smoothing: 0.0
+
+max_generator_batches: 32
+
+accum_count: 4
+optim: adam
+adam_beta1: 0.9
+adam_beta2: 0.998
+decay_method: noam
+learning_rate: 2.0
+max_grad_norm: 0.0
+warmup_steps: 8000
+
+save_checkpoint_steps: 10000
+keep_checkpoint: 20
+seed: 42
+world_size: 4
+gpu_ranks:
+- 0
+- 1
+- 2
+- 3
