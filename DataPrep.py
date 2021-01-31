@@ -284,5 +284,5 @@ def train_test_split(datafile, file_base_paths='data', test_size = 0.2, rseed=42
 
 
 if __name__ == '__main__':
-    filename = "expander_savv1_fixed.txt"
+    filename = "savi1to10_extended.txt"
     train_test_split(filename)
