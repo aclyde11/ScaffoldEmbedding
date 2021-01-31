@@ -14,7 +14,7 @@ data:
     valid:
         path_src: data/data_subsample/src-val.txt
         path_tgt: data/data_subsample/tgt-val.txt
-
+share_vocab: 'true'
 decoder_type: transformer
 encoder_type: transformer
 word_vec_size: 256
