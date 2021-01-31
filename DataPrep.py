@@ -272,7 +272,7 @@ def train_test_split(datafile, file_base_paths='data', test_size = 0.2, rseed=42
                     with open(f"{file_base_paths}/tgt-val.txt", 'w') as tgt_val:
                         for line in tqdm(fin):
                             molecule, scaffold = line.strip().split("\t")
-                            molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold_tokens)
+                            molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
 
                             if random.random() > test_size: # goes into train
                                 src_train.write(f"{scaffold_tokens}\n")
