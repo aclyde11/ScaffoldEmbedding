@@ -1,0 +1,26 @@
+## Where the samples will be written
+save_data: run/example
+## Where the vocab(s) will be written
+src_vocab: run/example.vocab.src
+tgt_vocab: run/example.vocab.tgt
+# Prevent overwriting existing files in the folder
+overwrite: False
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: data/data_subsample/src-train.txt
+        path_tgt: data/data_subsample/tgt-train.txt
+    valid:
+        path_src: data/data_subsample/src-val.txt
+        path_tgt: data/data_subsample/tgt-val.txt
+
+## Train on a single GPU
+#world_size: 1
+#gpu_ranks: [0]
+#
+## Where to save the checkpoints
+#save_model: toy-ende/run/model
+#save_checkpoint_steps: 500
+#train_steps: 1000
+#valid_steps: 500
