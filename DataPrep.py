@@ -440,7 +440,7 @@ def tokenzie_smile(smi):
     assert smi == ''.join(tokens)
     return ' '.join(tokens)
 
-def train_test_split(datafile, file_base_paths='data', sampler = 1.0, test_size = 0.001, rseed=42):
+def train_test_split(datafile, file_base_paths='data', sampler = 1.0, test_size = 0.0002, rseed=42):
     if not os.path.exists(file_base_paths):
         os.makedirs(file_base_paths)
 
@@ -467,5 +467,5 @@ def train_test_split(datafile, file_base_paths='data', sampler = 1.0, test_size 
 
 if __name__ == '__main__':
     filename = "data/savi1to10_extended.txt"
-    train_test_split(filename, file_base_paths='data/data_subsample', sampler=0.1)
+    train_test_split(filename, file_base_paths='data/data_subsample', sampler=0.5)
     # main()
