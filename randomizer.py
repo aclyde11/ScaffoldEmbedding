@@ -3,7 +3,10 @@ from rdkit import Chem
 import random
 from tqdm import tqdm
 import multiprocessing
+from rdkit import RDLogger
 
+lg = RDLogger.logger()
+lg.setLevel(RDLogger.CRITICAL)
 
 def randomSmiles(m1):
     m1.SetProp("_canonicalRankingNumbers", "True")

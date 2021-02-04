@@ -58,8 +58,6 @@ if __name__ == '__main__':
     infile = sys.argv[1]
     outfile = sys.argv[2]
 
-    lg = RDLogger.logger()
-    lg.setLevel(RDLogger.CRITICAL)
     mp.set_start_method('fork')
 
     with open(infile, 'r') as fin:
