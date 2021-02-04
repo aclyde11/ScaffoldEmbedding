@@ -53,16 +53,8 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                             if random.random() <= sampler:
                                 molecule, scaffold = line.strip().split("\t")
                                 if random.random() > test_size:  # goes into train
-                                    try:
-                                        mol_molcule, mol_scaffold = Chem.MolFromSmiles(
-                                            molecule), Chem.MolFromSmiles(scaffold)
-                                    except:
-                                        continue
-                                    if mol_molcule is None or mol_scaffold is None:
-                                        continue
-                                    for i in range(20):
-                                        molecule, scaffold = randomSmiles(mol_molcule), randomSmiles(mol_scaffold)
-                                        molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
+
+                                    molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
 
                                     src_train.write(f"{scaffold_tokens}\n")
                                     tgt_train.write(f"{molecule_tokens}\n")
@@ -71,6 +63,16 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                                     src_val.write(f"{scaffold_tokens}\n")
                                     tgt_val.write(f"{molecule_tokens}\n")
 
+
+# try:
+#     mol_molcule, mol_scaffold = Chem.MolFromSmiles(
+#         molecule), Chem.MolFromSmiles(scaffold)
+# except:
+#     continue
+# if mol_molcule is None or mol_scaffold is None:
+#     continue
+# for i in range(20):
+#     molecule, scaffold = randomSmiles(mol_molcule), randomSmiles(mol_scaffold)
 
 def getgargs():
     import argparse
