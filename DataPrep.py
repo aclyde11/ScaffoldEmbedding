@@ -38,7 +38,7 @@ def tokenzie_smile(smi):
     return ' '.join(tokens)
 
 
-def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.0002, rseed=42):
+def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.0002, rseed=42, total=-1):
     if not os.path.exists(file_base_paths):
         os.makedirs(file_base_paths)
 
@@ -49,7 +49,7 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
             with open(f"{file_base_paths}/tgt-train.txt", 'w') as tgt_train:
                 with open(f"{file_base_paths}/src-val.txt", 'w') as src_val:
                     with open(f"{file_base_paths}/tgt-val.txt", 'w') as tgt_val:
-                        for line in tqdm(fin):
+                        for line in tqdm(fin, total=total if total != -1 else None):
                             if random.random() <= sampler:
                                 molecule, scaffold = line.strip().split("\t")
                                 if random.random() > test_size:  # goes into train
@@ -79,9 +79,10 @@ def getgargs():
     parser.add_argument('-o', help='output folder', type=str, required=True)
     parser.add_argument('--sampler', type=float, required=True)
     parser.add_argument('--test_size', type=float, required=True)
+    parser.add_argument('--total', type=int, required=False, default=-1)
     return parser.parse_args()
 
 if __name__ == '__main__':
     args = getgargs()
     filename = args.i
-    train_test_split(filename, file_base_paths=args.o, sampler=args.sampler, test_size=args.test_size)
+    train_test_split(filename, file_base_paths=args.o, sampler=args.sampler, test_size=args.test_size, total=args.total)
