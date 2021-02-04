@@ -58,6 +58,8 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                                             molecule), Chem.MolFromSmiles(scaffold)
                                     except:
                                         continue
+                                    if mol_molcule is None or mol_scaffold is None:
+                                        continue
                                     for i in range(5):
                                         molecule, scaffold = randomSmiles(mol_molcule), randomSmiles(mol_scaffold)
                                         molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
