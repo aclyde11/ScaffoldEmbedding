@@ -21,6 +21,14 @@ class SmileTokenizer():
         assert smi == ''.join(tokens)
         return ' '.join(tokens)
 
+def randomSmiles(m1):
+    m1.SetProp("_canonicalRankingNumbers", "True")
+    idxs = list(range(0,m1.GetNumAtoms()))
+    random.shuffle(idxs)
+    for i,v in enumerate(idxs):
+        m1.GetAtomWithIdx(i).SetProp("_canonicalRankingNumber", str(v))
+    return Chem.MolToSmiles(m1)
+
 
 def tokenzie_smile(smi):
     pattern = "(\[[^\]]+]|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\\\|\/|:|~|@|\?|>|\*|\$|\%[0-9]{2}|[0-9])"
@@ -44,14 +52,20 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                         for line in tqdm(fin):
                             if random.random() <= sampler:
                                 molecule, scaffold = line.strip().split("\t")
-                                molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
+                                try:
+                                    mol_molcule, mol_scaffold = Chem.MolFromSmiles(molecule), Chem.MolFromSmiles(scaffold)
+                                except:
+                                    continue
+                                for i in range(5):
+                                    molecule, scaffold = randomSmiles(mol_molcule), randomSmiles(mol_scaffold)
+                                    molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
 
-                                if random.random() > test_size:  # goes into train
-                                    src_train.write(f"{scaffold_tokens}\n")
-                                    tgt_train.write(f"{molecule_tokens}\n")
-                                else:
-                                    src_val.write(f"{scaffold_tokens}\n")
-                                    tgt_val.write(f"{molecule_tokens}\n")
+                                    if random.random() > test_size:  # goes into train
+                                        src_train.write(f"{scaffold_tokens}\n")
+                                        tgt_train.write(f"{molecule_tokens}\n")
+                                    else:
+                                        src_val.write(f"{scaffold_tokens}\n")
+                                        tgt_val.write(f"{molecule_tokens}\n")
 
 
 def getgargs():
