@@ -31,7 +31,8 @@ def getRandom(data):
     for _ in range(5):
         smiles1.add(randomSmiles(mol1))
         smiles2.add(randomSmiles(mol2))
-    return list(smiles1), list(smiles2)
+    lsize = min(len(smiles1), len(smiles2))
+    return list(smiles1)[:lsize], list(smiles2)[:lsize]
 
 if __name__ == '__main__':
     filein = sys.argv[1]
