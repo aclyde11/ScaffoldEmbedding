@@ -5,10 +5,13 @@ import re
 from rdkit import Chem
 from tqdm import tqdm
 
+import scaffoldgraph as sg
+
 
 def randomize_smi(smi):
     random_equivalent_smiles = Chem.MolFromSmiles(Chem.MolToSmiles(smi, doRandom=True))
     return random_equivalent_smiles
+
 
 
 class SmileTokenizer():
@@ -51,13 +54,11 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                     with open(f"{file_base_paths}/tgt-val.txt", 'w') as tgt_val:
                         for line in tqdm(fin, total=total if total != -1 else None):
                             if random.random() <= sampler:
-                                molecule, scaffold = line.strip().split("\t")
+                                op = molecule, scaffold = line.strip().split(" ")
                                 if random.random() > test_size:  # goes into train
-
                                     molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
-
-                                    src_train.write(f"{scaffold_tokens}\n")
-                                    tgt_train.write(f"{molecule_tokens}\n")
+                                    src_train.write(f"{op} {scaffold_tokens}\n")
+                                    tgt_train.write(f"{op} {molecule_tokens}\n")
                                 else:
                                     molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
                                     src_val.write(f"{scaffold_tokens}\n")
