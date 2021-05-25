@@ -61,12 +61,14 @@ def train_test_split(datafile, file_base_paths='data', sampler=1.0, test_size=0.
                                     continue
                                 if random.random() > test_size:  # goes into train
                                     molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
-                                    src_train.write(f"{op} {scaffold_tokens}\n")
-                                    tgt_train.write(f"{op} {molecule_tokens}\n")
+                                    if len(molecule_tokens) != 0 and len(scaffold_tokens) != 0:
+                                        src_train.write(f"{op} {molecule_tokens}\n")
+                                        tgt_train.write(f"{scaffold_tokens}\n")
                                 else:
                                     molecule_tokens, scaffold_tokens = tokenizer(molecule), tokenizer(scaffold)
-                                    src_val.write(f"{scaffold_tokens}\n")
-                                    tgt_val.write(f"{molecule_tokens}\n")
+                                    if len(molecule_tokens) != 0 and len(scaffold_tokens) != 0:
+                                        src_val.write(f"{op} {molecule_tokens}\n")
+                                        tgt_val.write(f"{scaffold_tokens}\n")
 
 
 # try:
