@@ -1,5 +1,9 @@
 from rdkit import Chem
 import rdkit.Chem.Scaffolds.MurckoScaffold
+from rdkit import RDLogger
+from tqdm import tqdm
+
+RDLogger.DisableLog('rdApp.info')
 
 def mol_equal(s,t):
     return s.HasSubstructMatch(t) and t.HasSubstructMatch(s)
@@ -61,7 +65,7 @@ def main(fsrc, ftgt):
     with open(fsrc, 'r') as src:
         with open(ftgt, 'r') as tgt:
 
-            for s,t in zip(src, tgt):
+            for s,t in tqdm(zip(src, tgt)):
                 op = s.split(" ")
                 s = " ".join(op[1:])
                 op = op[0]
@@ -86,7 +90,7 @@ def main(fsrc, ftgt):
                 if r > 0:
                     correct += 1
 
-        print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}), Correct {correct} ({correct} / {total}) ")
+        print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%) ")
 
 
 
