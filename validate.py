@@ -90,7 +90,7 @@ def main(fsrc, ftgt, threads=4):
         with open(ftgt, 'r') as tgt:
             with multiprocessing.Pool(threads) as p:
                 iterr = p.imap(get_result, zip(src, tgt))
-                pbar = tqdm(iterr)
+                pbar = tqdm(iterr, postfix="")
                 for idx, r in enumerate(pbar):
                     total += 1
                     if r == 0: #could parse, but not right
@@ -107,6 +107,7 @@ if  __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-src', type=str, required=True)
     parser.add_argument('-tgt', type=str, required=True)
+    parser.add_argument('-threads', type=int, required=False, default=4)
     args = parser.parse_args()
 
-    main(args.src, args.tgt)
+    main(args.src, args.tgt, args.threads)
