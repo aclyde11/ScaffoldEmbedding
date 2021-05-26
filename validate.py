@@ -3,6 +3,8 @@ import rdkit.Chem.Scaffolds.MurckoScaffold
 from rdkit import RDLogger
 from tqdm import tqdm
 
+import multiprocessing
+
 RDLogger.DisableLog('rdApp.info')
 
 def mol_equal(s,t):
@@ -56,45 +58,48 @@ def check_expand(s,t):
         return 1
     else:
         return 0
+    
 
-def main(fsrc, ftgt):
+def get_result(t):
+    s,t = t
+    op = s.split(" ")
+    s = " ".join(op[1:])
+    op = op[0]
+    s = s.strip().replace(' ', '')
+    t = t.strip().replace(' ', '')
+
+    if op == 'SCAFFOLD':
+        r = check_scaffold(s, t)
+    elif op == 'EXPAND':
+        r = check_expand(s, t)
+    elif op == 'LOWER':
+        r = check_lower(s, t)
+    elif op == 'UPPER':
+        r = check_upper(s, t)
+    else:
+        print(f"Error {op} did not match anything. The whole line is {s, t}")
+        exit()
+    return r
+
+def main(fsrc, ftgt, threads=4):
 
     total = 0
     correct = 0
     correct_syntax = 0
     with open(fsrc, 'r') as src:
         with open(ftgt, 'r') as tgt:
-
-            for s,t in tqdm(zip(src, tgt)):
-                op = s.split(" ")
-                s = " ".join(op[1:])
-                op = op[0]
-                s = s.strip().replace(' ', '')
-                t = t.strip().replace(' ', '')
-
-                if op == 'SCAFFOLD':
-                    r = check_scaffold(s,t)
-                elif op == 'EXPAND':
-                    r  = check_expand(s,t)
-                elif op == 'LOWER':
-                    r = check_lower(s,t)
-                elif op == 'UPPER':
-                    r = check_upper(s,t)
-                else:
-                    print(f"Error {op} did not match anything. The whole line is {s,t}")
-                    exit()
-
-                total += 1
-                if r == 0: #could parse, but not right
-                    correct_syntax += 1
-                if r > 0:
-                    correct += 1
-
-        print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%) ")
-
-
-
-
+            with multiprocessing.Pool(threads) as p:
+                iterr = p.imap(get_result, zip(src, tgt))
+                pbar = tqdm(iterr)
+                for idx, r in enumerate(pbar):
+                    total += 1
+                    if r == 0: #could parse, but not right
+                        correct_syntax += 1
+                    if r > 0:
+                        correct += 1
+                if idx > 0 and  idx % 1000 == 0:
+                    pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
+        print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%)")
 
 
 if  __name__ == '__main__':
