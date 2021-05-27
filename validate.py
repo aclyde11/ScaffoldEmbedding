@@ -94,6 +94,7 @@ def main(fsrc, ftgt, threads=4):
                 pbar = tqdm(iterr, postfix="")
                 for idx, (t,r) in enumerate(pbar):
                     total_t[t] += 1
+                    total += 1
                     if r == 0: #could parse, but not right
                         correct_syntax += 1
                     if r > 0:
