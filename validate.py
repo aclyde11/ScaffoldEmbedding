@@ -96,14 +96,14 @@ def main(fsrc, ftgt, threads=4):
                 for idx, (t,r) in enumerate(pbar):
                     total_t[t] += 1
                     total += 1
-                    if r >= 0: #could parse
+                    if r == 0 or r > 0: #could parse
                         correct_syntax += 1
                         correct_syntax_t[t] =+ 1
                     if r > 0:
                         correct += 1
                         correct_t[t] += 1
-                if idx > 0 and  idx % 1000 == 0:
-                    pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
+                    if idx > 0 and  idx % 1000 == 0:
+                        pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
         print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%)")
         for key in total_t.keys():
             print(f"{key}: {correct_t[key]} ({0 if total_t[key] == 0 else (correct_t[key] / total_t[key])}%) ({0 if correct_syntax_t[key] == 0 else (correct_t[key] / correct_syntax_t[key])}%))")
