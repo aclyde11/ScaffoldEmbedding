@@ -87,6 +87,7 @@ def main(fsrc, ftgt, threads=4):
     correct_t = {'l':0, 'u': 0, 'e': 0, 's': 0}
     correct = 0
     correct_syntax = 0
+    correct_syntax_t = {'l':0, 'u': 0, 'e': 0, 's': 0}
     with open(fsrc, 'r') as src:
         with open(ftgt, 'r') as tgt:
             with multiprocessing.Pool(threads) as p:
@@ -97,6 +98,7 @@ def main(fsrc, ftgt, threads=4):
                     total += 1
                     if r == 0: #could parse, but not right
                         correct_syntax += 1
+                        correct_syntax_t[t] =+ 1
                     if r > 0:
                         correct += 1
                         correct_t[t] += 1
@@ -104,7 +106,7 @@ def main(fsrc, ftgt, threads=4):
                     pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
         print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%)")
         for key in total_t.keys():
-            print(f"{key}: {correct_t[t]} ({0 if total_t[t] == 0 else (correct_t[t] / total_t[t])} %)")
+            print(f"{key}: {correct_t[t]} ({0 if total_t[t] == 0 else (correct_t[t] / total_t[t])}%) ({0 if correct_syntax_t[t] == 0 else (correct_t[t] / correct_syntax_t[t])}%))")
 
 if  __name__ == '__main__':
     import argparse
