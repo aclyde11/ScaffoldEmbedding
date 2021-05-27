@@ -30,7 +30,7 @@ def check_lower(s,t):
 
     if s is None or t is None:
         return -1
-    if t.HasSubstructMatch(s):
+    if s.HasSubstructMatch(t):
         return 1
     else:
         return 0
