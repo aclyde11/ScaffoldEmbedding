@@ -69,21 +69,22 @@ def get_result(t):
     t = t.strip().replace(' ', '')
 
     if op == 'SCAFFOLD':
-        r = check_scaffold(s, t)
+        return 's', check_scaffold(s, t)
     elif op == 'EXPAND':
-        r = check_expand(s, t)
+        return 'e', check_expand(s, t)
     elif op == 'LOWER':
-        r = check_lower(s, t)
+        return 'l', check_lower(s, t)
     elif op == 'UPPER':
-        r = check_upper(s, t)
+        return 'u', check_upper(s, t)
     else:
         print(f"Error {op} did not match anything. The whole line is {s, t}")
         exit()
-    return r
 
 def main(fsrc, ftgt, threads=4):
 
     total = 0
+    total_t = {'l':0, 'u': 0, 'e': 0, 's': 0}
+    correct_t = {'l':0, 'u': 0, 'e': 0, 's': 0}
     correct = 0
     correct_syntax = 0
     with open(fsrc, 'r') as src:
@@ -91,16 +92,18 @@ def main(fsrc, ftgt, threads=4):
             with multiprocessing.Pool(threads) as p:
                 iterr = p.imap(get_result, zip(src, tgt))
                 pbar = tqdm(iterr, postfix="")
-                for idx, r in enumerate(pbar):
-                    total += 1
+                for idx, (t,r) in enumerate(pbar):
+                    total_t[t] += 1
                     if r == 0: #could parse, but not right
                         correct_syntax += 1
                     if r > 0:
                         correct += 1
+                        correct_t[t] += 1
                 if idx > 0 and  idx % 1000 == 0:
                     pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
         print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%)")
-
+        for key in total_t.keys():
+            print(f"{key}: {correct_t[t]} ({correct_t[t] / total_t[t]}%)")
 
 if  __name__ == '__main__':
     import argparse
