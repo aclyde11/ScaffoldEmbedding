@@ -87,7 +87,7 @@ def get_result(t):
         print(f"Error {op} did not match anything. The whole line is {s, t}")
         exit()
 
-def main(fsrc, ftgt, threads=4):
+def main(fsrc, ftgt, threads=4, tot=None):
 
     total = 0
     total_t = {'l':0, 'u': 0, 'e': 0, 's': 0}
@@ -99,7 +99,7 @@ def main(fsrc, ftgt, threads=4):
         with open(ftgt, 'r') as tgt:
             with multiprocessing.Pool(threads) as p:
                 iterr = p.imap(get_result, zip(src, tgt))
-                pbar = tqdm(iterr, postfix="")
+                pbar = tqdm(iterr, total=tot)
                 for idx, (t,r) in enumerate(pbar):
                     total_t[t] += 1
                     total += 1
@@ -121,6 +121,7 @@ if  __name__ == '__main__':
     parser.add_argument('-src', type=str, required=True)
     parser.add_argument('-tgt', type=str, required=True)
     parser.add_argument('-threads', type=int, required=False, default=4)
+    parser.add_argument('-tot', type=int, required=False, default=None)
     args = parser.parse_args()
 
-    main(args.src, args.tgt, args.threads)
+    main(args.src, args.tgt, args.threads, args.tot)
