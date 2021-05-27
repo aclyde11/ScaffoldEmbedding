@@ -17,7 +17,11 @@ def check_scaffold(s,t):
     if s is None or t is None:
         return -1
 
-    scaffold = Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(s)
+    try:
+        scaffold = Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(s)
+    except:
+        return -1
+
 
     if mol_equal(scaffold, t):
         return 1
@@ -52,7 +56,10 @@ def check_expand(s,t):
 
     if s is None or t is None:
         return -1
-    scaffold = Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(t)
+    try:
+        scaffold = Chem.Scaffolds.MurckoScaffold.GetScaffoldForMol(t)
+    except:
+        return -1
 
     if mol_equal(scaffold, s):
         return 1
