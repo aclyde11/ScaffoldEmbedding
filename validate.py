@@ -103,7 +103,7 @@ def main(fsrc, ftgt, threads=4):
                     pbar.set_postfix(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax / total}%), Correct {correct} ({correct / total}%)")
         print(f"Total {total}, Syntax good {correct_syntax} ({correct_syntax /total}%), Correct {correct} ({correct/total}%)")
         for key in total_t.keys():
-            print(f"{key}: {correct_t[t]} ({correct_t[t] / total_t[t]}%)")
+            print(f"{key}: {correct_t[t]} ({0 if total_t[t] == 0 else (correct_t[t] / total_t[t])} %)")
 
 if  __name__ == '__main__':
     import argparse
