@@ -41,7 +41,7 @@ def check_upper(s,t):
 
     if s is None or t is None:
         return -1
-    if s.HasSubstructMatch(t):
+    if t.HasSubstructMatch(s):
         return 1
     else:
         return 0
