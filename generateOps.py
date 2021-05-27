@@ -61,7 +61,7 @@ if __name__ == '__main__':
     cs = 0
     with open(filein, 'r') as fin:
         with open(fileout, 'w') as fout:
-            with multiprocessing.Pool(7) as pool:
+            with multiprocessing.Pool(24) as pool:
                 resiter = pool.imap_unordered(generate_ops, fin)
                 for data in tqdm(resiter, total=linecount):
                     if len(data) != 0:
