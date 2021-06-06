@@ -25,7 +25,7 @@ def generate_ops(smi):
     frags = sg.get_next_murcko_fragments(scaffold)
 
     smi_selfies = selfies.encoder(smi)
-    scaffold_selfies = selfies.encoder(Chem.MolFromSmiles(scaffold))
+    scaffold_selfies = selfies.encoder(Chem.MolToSmiles(scaffold))
 
     data = []
     data += [('SCAFFOLD', smi_selfies, scaffold_selfies),
