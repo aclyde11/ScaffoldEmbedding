@@ -31,7 +31,7 @@ def generate_ops(smi):
     data += [('SCAFFOLD', smi_selfies, scaffold_selfies),
              ('EXPAND', scaffold_selfies, smi_selfies)]
     for frag in frags:
-        frag_seflies = selfies.encoder(frag)
+        frag_seflies = selfies.encoder(Chem.MolToSmiles(frag))
         data.append(('LOWER', scaffold_selfies, frag_seflies))
         data.append(('UPPER', frag_seflies, scaffold_selfies))
     return data
